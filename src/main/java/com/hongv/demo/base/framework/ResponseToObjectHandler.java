@@ -1,5 +1,7 @@
 package com.hongv.demo.base.framework;
 
+import com.hongv.demo.base.framework.codec.JSONCodec;
+import com.hongv.demo.base.framework.web.ResponseWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
@@ -22,7 +24,7 @@ public class ResponseToObjectHandler implements HandlerMethodReturnValueHandler 
 
     static {
         SUPPORT_RETURN_VALUE_TYPE_SET.add(String.class);
-        SUPPORT_RETURN_VALUE_TYPE_SET.add(Object.class);
+        SUPPORT_RETURN_VALUE_TYPE_SET.add(ResponseWrapper.class);
         SUPPORT_RETURN_VALUE_TYPE_SET.add(Integer.class);
     }
 
@@ -56,6 +58,11 @@ public class ResponseToObjectHandler implements HandlerMethodReturnValueHandler 
         try {
             PrintWriter writer = response.getWriter();
             // 输出到body中
+            // FIXME 这里如果是 ResponseWrapper类型， 直接print（returnValue）会返回一个对象指针，应该返回该对象转成json的字符串
+            if(returnValue instanceof ResponseWrapper){
+                // 如果是ResponseWrapper对象, 直接转成Json
+                returnValue = JSONCodec.encode(returnValue);
+            }
             writer.print(returnValue);
             // 刷到网络io流中
             writer.flush();
