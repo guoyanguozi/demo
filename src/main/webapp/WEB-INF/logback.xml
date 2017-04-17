@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 seconds">
+
+    <property name="LOG_HOME" value="/data/log/api"/>
+
+    <appender name="stdout" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--写到那个文件里-->
+        <file>${LOG_HOME}/main.log</file>
+        <!--文件的明明规则-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/main.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <!--日志的编码-->
+        <encoder charset="UTF-8">
+            <pattern>%d{yy-MM-dd HH:mm:ss.SSS} %-5level %c:%L ## %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="stdout500" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/500.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/500.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>%d{yy-MM-dd HH:mm:ss.SSS} %-5level %c:%L ## %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--<appender name="perfFile" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+    <!--<file>${LOG_HOME}/perfs.log</file>-->
+    <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+    <!--<fileNamePattern>${LOG_HOME}/perfs.log.%d{yyyy-MM-dd}</fileNamePattern>-->
+    <!--<maxHistory>60</maxHistory>-->
+    <!--</rollingPolicy>-->
+    <!--<encoder charset="UTF-8">-->
+    <!--<pattern>%msg%n</pattern>-->
+    <!--</encoder>-->
+    <!--</appender>-->
+    <!--<logger name="im.cu.perf" level="info" additivity="false">-->
+    <!--<appender-ref ref="perfFile" />-->
+    <!--</logger>-->
+
+    <!--<logger name="im.cu.framework.web.exception.CUExceptionLogResolver" level="info" additivity="false">-->
+    <!--<appender-ref ref="stdout500" />-->
+    <!--</logger>-->
+
+    <logger name="com.hongv" level="info" additivity="false">
+        <appender-ref ref="stdout"/>
+    </logger>
+
+    <logger name="org.springframework" level="info" additivity="false">
+        <appender-ref ref="stdout"/>
+    </logger>
+
+    <root>
+        <appender-ref ref="stdout"/>
+        <level value="debug"/>
+    </root>
+</configuration>
