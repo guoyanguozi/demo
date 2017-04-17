@@ -18,6 +18,26 @@
         </property>
     </bean>
 
+    <bean name="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--注册一个bean：-->
+    <!--用来告诉springmvc， 我们要自己处理一部分被@RequestMapping注解的方法的返回值-->
+    <!--将请求的输出输出成我们想要的格式或者类型-->
+    <bean name="handlerAdapter"
+          class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="returnValueHandlers">
+            <list>
+                <!--我们自己定义的处理类-->
+                <bean class="com.hongv.demo.base.framework.ResponseToObjectHandler"></bean>
+                <bean class="org.springframework.web.servlet.mvc.method.annotation.ModelAndViewMethodReturnValueHandler"/>
+            </list>
+        </property>
+    </bean>
+
     <bean name="handlerExceptionResolver"
           class="org.springframework.web.servlet.handler.HandlerExceptionResolverComposite">
         <property name="exceptionResolvers">
